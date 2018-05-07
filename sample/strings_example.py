@@ -1,48 +1,68 @@
-import operator
+import collections
 
 class StringsExamples(object):
     """A class to play with the strings"""
 
     @staticmethod
     def count_words(args):
-        vocales = [" a ", " e ", " i ", " o ", " u "]
-        articulos = [" el ", " la ", " los ", " las ", " lo ", " un ", " uno ", " una ", " unos ", " unas "]
-        preposiciones = [" pero ", " hacia ", " del ", " incluso ", " mas ", " menos", " y ", " a ", " ante ", " bajo ", " cabe ", " con ", " contra ", " de ", " desde ", " durante ", " en ", " entre ", " hasta "]
-        preposiciones.extend([ " mediante ", " para ", " por ", " segun ", " sin ", " so ", " sobre ", " tras ", " versus ", " via ", " excepto ", " salvo ", " ademas ", " cual ", " cuales "])
-        pronombres = [" este ", " esta ", " esto ", " estos ", " estas ", " ese ", " esa ", " eso ", " esos", " esas ", " aquel ", " aquella ", " aquellos ", " aquellas ", " le ", " les ", " yo ", " me ", " mi "]
-        pronombres.extend([ "conmigo ", " tu ", " te ", " ti ", " contigo ", " usted ", " vos ", " el ", " se ", " si ", " consigo ", " ella ", " ello ", " nosotros ", " nos ", " nosotras ", " vosotros ", " vosotras ", " os "])
-        puntuaciones = [",", ".", ";", ":", "-", "'", "*", "!", "?", "<", ">",  "[", "]", "{", "}", "("]
-        puntuaciones.extend([ ")",'"', "#", "%", "$", "="])
-        otros = [" que ", " de ", " al ", " su ", " sus "]
-        listaStopwords = []
+        if args is None:
+            resultado = []
+        elif len(args) == 0:
+            resultado = []
+        else:
+            vocales = ["a", "e", "i", "o", "u"]
 
-        listaStopwords.extend(vocales)
-        listaStopwords.extend(articulos)
-        listaStopwords.extend(preposiciones)
-        listaStopwords.extend(pronombres)
-        listaStopwords.extend(otros)
+            articulos = ["el", "la", "los", "las", "lo", "un", "uno", "una", "unos", "unas"]
 
-        args = " "+args.lower()+" "
-        for punt in puntuaciones:
-            args = args.replace(punt, "")
+            preposiciones = ['pero', 'hacia', 'del', 'incluso', 'mas', 'menos', 'y', 'a', 'ante', 'bajo', 'cabe', 'con',
+                             'contra', 'de', 'desde', 'durante', 'en', 'entre', 'hasta', 'mediante', 'para', 'por',
+                             'segun',
+                             'sin', 'so', 'sobre', 'tras', 'versus', 'via', 'excepto', 'salvo', 'ademas', 'cual',
+                             'cuales']
 
-        for stopwords in listaStopwords:
-            args = args.replace(stopwords, " ")
+            pronombres = ['este', 'esta', 'esto', 'estos', 'estas', 'ese', 'esa', 'eso', 'esos', 'esas', 'aquel',
+                          'aquella',
+                          'aquellos', 'aquellas', 'le', 'les', 'yo', 'me', 'mi', 'conmigo', 'tu', 'te', 'ti', 'contigo',
+                          'usted', 'vos', 'el', 'se', 'si', 'consigo', 'ella', 'ello', 'nosotros', 'nos', 'nosotras',
+                          'vosotros', 'vosotras', 'os']
 
-        palabras = args.split()
-        dic = {}
+            puntuaciones = [",", ".", ";", ":", "-", "'", "*", "!", "?", "<", ">", "[", "]", "{", "}", "(", ")", '"',
+                            "#", "%", "$", "="]
 
-        for palabra in palabras:
-            numero_apariciones = 0
+            otros = ["que", "de", "al", "su", "sus"]
 
-            for repetida in palabras:
-                if(palabra in repetida):
-                    numero_apariciones = numero_apariciones + 1
+            listaStopwords = []
 
-            dic[palabra] = numero_apariciones
+            listaStopwords.extend(vocales)
+            listaStopwords.extend(articulos)
+            listaStopwords.extend(preposiciones)
+            listaStopwords.extend(pronombres)
+            listaStopwords.extend(otros)
 
-        resultado = sorted(dic.items(), key=operator.itemgetter(1))
-        resultado.reverse()
+            for punt in puntuaciones:
+                args = args.replace(punt, "")
+            args=args.lower()
+            args = args.split()
 
+            for stopwords in listaStopwords:
+                try:
+                    for palabra in args:
+                        args.remove(stopwords)
+                except AttributeError:
+                    pass
+                except ValueError:
+                    pass
+
+            counter = collections.Counter(args)
+
+            resultado = counter.most_common()
 
         return resultado
+
+    @staticmethod
+    def cmp(a, b):
+        for element in a:
+            if element not in b:
+                return False
+
+        return True

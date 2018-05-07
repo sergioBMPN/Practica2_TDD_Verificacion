@@ -11,9 +11,6 @@ You have to install virtualenv with:
 pip install virtualenv
 ```
 
-If you are using Linux, copy the file test_strings_examples_ubuntu.py in the test folder and extract 
-test_strings_examples.py, or the other way around if you are using Windows
-
 You can install the dependencies using:
 
 ```bash
