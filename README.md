@@ -35,4 +35,6 @@ python main.py "hola me llamo Juan"
 # Python version
 We are using python 3.6
 
+# Version
+1.2
 
